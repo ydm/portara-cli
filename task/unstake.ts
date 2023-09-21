@@ -2,7 +2,7 @@ import { Signer } from "ethers";
 import { task } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
-import { IPoolEscrow } from "../typechain-types";
+import { IERC20Upgradeable, IPoolEscrow } from "../typechain-types";
 
 import contracts from "../src/contracts.json";
 
@@ -22,6 +22,8 @@ task("unstake", "Exchange StakedETH and RewardETH for native ETH")
     const rewardEthValue: bigint = hre.ethers.parseEther(args.rewardEthValue);
 
     const escrow: IPoolEscrow = await hre.ethers.getContractAt("IPoolEscrow", contracts.escrow);
+    const steth: IERC20Upgradeable = await hre.ethers.getContractAt("IERC20Upgradeable", contracts.stakedEth);
+    const rweth: IERC20Upgradeable = await hre.ethers.getContractAt("IERC20Upgradeable", contracts.rewardEth);
 
     const signers: Signer[] = await hre.ethers.getSigners();
     const signer: Signer = signers[0];
@@ -34,6 +36,11 @@ task("unstake", "Exchange StakedETH and RewardETH for native ETH")
         `${args.rewardEthValue} StakedETH ...`
     );
 
+    // First, approve the escrow contract.
+    await steth.connect(signer).approve(contracts.escrow, stakedEthValue);
+    await rweth.connect(signer).approve(contracts.escrow, rewardEthValue);
+
+    // Then make the unstaking request.
     try {
       await escrow.connect(signer).request(stakedEthValue, rewardEthValue);
     } catch (err: any) {
