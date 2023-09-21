@@ -5,10 +5,11 @@ Use Portara -- Blockdaemon's Liquid Staking solution -- via the command line int
 
 ### Setup
 
-1. Install all dependencies: `npm install`.
-2. Set the following environment variables:
+1. Clone this repository.
+2. Install all dependencies: `npm install`.
+3. Set the following environment variables:
   - `INFURA_APIKEY` -- An API Key for accessing an Ethereum node provided by [Infura](https://www.infura.io)
-  - `MNEMONIC` -- Your wallet's secret key.
+  - `MNEMONIC` -- Your wallet's secret key, hex encoded.
 
 
 ### Usage examples
