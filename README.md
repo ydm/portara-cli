@@ -35,6 +35,19 @@ npx hardhat --network hardhat balance 0xADDRESS
 ```
 
 
+### Blockdaemon specific commands
+
+List fee recipients:
+```
+npx hardhat --network mainnet list-fee-recipients
+```
+
+Claim fees:
+```
+npx hardhat --network claim <RECIPIENT>
+```
+
+
 ### Playground
 
 The `test/playground.ts` file presents the entire journey:
